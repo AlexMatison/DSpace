@@ -11,13 +11,13 @@ networks:
   dspacenet:
 services:
   dspace:
-    container_name: dspace
+    container_name: dspace-test
     depends_on:
     - dspacedb
-    image: "${DOCKER_OWNER:-dspace}/dspace:${DSPACE_VER:-dspace-6_x-jdk8-test}"
+    image: "dspace-test:latest"
     build:
       context: .
-      dockerfile: Dockerfile.jdk8-test
+      dockerfile: Dockerfile.jdk8
     networks:
       dspacenet:
     ports:

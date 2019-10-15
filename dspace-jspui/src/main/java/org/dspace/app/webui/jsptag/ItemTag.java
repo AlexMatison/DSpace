@@ -454,7 +454,9 @@ public class ItemTag extends TagSupport
             boolean isLink = false;
             boolean isResolver = false;
             boolean isNoBreakLine = false;
+            boolean isSpecialLink = false;
             boolean isDisplay = false;
+
 
             String style = null;
             Matcher fieldStyleMatcher = fieldStylePatter.matcher(field);
@@ -482,6 +484,7 @@ public class ItemTag extends TagSupport
 				isNoBreakLine = style.contains("nobreakline");
 				isDisplay = style.equals("inputform");
                 isResolver = style.contains("resolver") || urn2baseurl.keySet().contains(style);
+		isSpecialLink = style.contains("special");
                 field = field.replaceAll("\\("+style+"\\)", "");
             } 
 
@@ -591,6 +594,14 @@ public class ItemTag extends TagSupport
                             out.print("<a href=\"" + val.getValue() + "\">"
                                     + Utils.addEntities(val.getValue()) + "</a>");
                         }
+			else if (isSpecialLink)
+			{
+			    String[] specialLinkSplit = val.getValue().split("\\|",2);
+			    String specialDisplayName = specialLinkSplit[0];
+			    String specialUri = specialLinkSplit[1];
+			    out.print("<a href=\"" + specialUri + "\">"
+                                    + specialDisplayName + "</a>");
+			}
                         else if (isDate)
                         {
                             DCDate dd = new DCDate(val.getValue());
@@ -685,7 +696,7 @@ public class ItemTag extends TagSupport
 
         out.println("</table><br/>");
 
-        listBitstreams(context);
+//        listBitstreams(context);
 
         if (ConfigurationManager
                 .getBooleanProperty("webui.licence_bundle.show"))
@@ -761,7 +772,7 @@ public class ItemTag extends TagSupport
 
         out.println("</table></div><br/>");
 
-        listBitstreams(context);
+//        listBitstreams(context);
 
         if (ConfigurationManager
                 .getBooleanProperty("webui.licence_bundle.show"))
